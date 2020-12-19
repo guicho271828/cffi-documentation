@@ -1,0 +1,325 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+  <!ENTITY tex "TeX">
+  <!ENTITY latex "LaTeX">
+]>
+<book id="cffi-sys.xml" lang="en">
+<title>CFFI-SYS Interface Specification</title>
+
+<!-- Show types in the same index as the functions. -->
+
+<bookinfo><legalnotice><para>Copyright &#169; 2005-2006, James Bielman  &lt;jamesjb at jamesjb.com&gt;
+</para>
+<blockquote><para>Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the &#8220;Software&#8221;), to deal in the Software without
+restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+</para>
+<para>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+</para>
+<para>THE SOFTWARE IS PROVIDED &#8220;AS IS&#8221;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+</para></blockquote></legalnotice></bookinfo>
+<!-- %**end of header -->
+
+
+<!-- @subtitle Version X.X -->
+<!-- @author James Bielman -->
+
+<para>Copyright &#169; 2005-2006, James Bielman  &lt;jamesjb at jamesjb.com&gt;
+</para>
+<blockquote><para>Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the &#8220;Software&#8221;), to deal in the Software without
+restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+</para>
+<para>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+</para>
+<para>THE SOFTWARE IS PROVIDED &#8220;AS IS&#8221;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+</para></blockquote>
+
+<chapter label="" id="Top">
+<title>cffi-sys</title>
+<para>Copyright &#169; 2005-2006, James Bielman  &lt;jamesjb at jamesjb.com&gt;
+</para>
+<blockquote><para>Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the &#8220;Software&#8221;), to deal in the Software without
+restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+</para>
+<para>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+</para>
+<para>THE SOFTWARE IS PROVIDED &#8220;AS IS&#8221;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+</para></blockquote>
+
+</chapter>
+<chapter label="1" id="Introduction">
+<title>Introduction</title>
+
+<para><acronym>CFFI</acronym>, the Common Foreign Function Interface, purports to be
+a portable foreign function interface for Common Lisp.
+</para>
+<para>This specification defines a set of low-level primitives that must be
+defined for each Lisp implementation supported by <acronym>CFFI</acronym>.
+These operators are defined in the <literal>CFFI-SYS</literal> package.
+</para>
+<para>The <literal>CFFI</literal> package uses the <literal>CFFI-SYS</literal> interface
+to implement an extensible foreign type system with support for
+typedefs, structures, and unions, a declarative interface for
+defining foreign function calls, and automatic conversion of
+foreign function arguments to/from Lisp types.
+</para>
+<para>Please note the following conventions that apply to everything in
+<literal>CFFI-SYS</literal>:
+</para>
+<itemizedlist><listitem><para>Functions in <literal>CFFI-SYS</literal> that are low-level versions of functions
+exported from the <literal>CFFI</literal> package begin with a leading
+percent-sign (eg. <literal>%mem-ref</literal>).
+</para>
+</listitem><listitem><para>Where &#8220;foreign type&#8221; is mentioned as the kind of an argument, the
+meaning is restricted to that subset of all foreign types defined in
+<link linkend="Built_002dIn-Foreign-Types">Built-In Foreign Types</link>.  Support for higher-level types is
+always defined in terms of those lower-level types in <literal>CFFI</literal>
+proper.
+</para></listitem></itemizedlist>
+
+</chapter>
+<chapter label="2" id="Built_002dIn-Foreign-Types">
+<title>Built-In Foreign Types</title>
+
+<synopsis><indexterm role="tp"><primary>:char</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:char</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:unsigned-char</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:unsigned-char</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:short</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:short</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:unsigned-short</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:unsigned-short</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:int</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:int</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:unsigned-int</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:unsigned-int</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:long</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:long</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:unsigned-long</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:unsigned-long</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:long-long</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:long-long</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:unsigned-long-long</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:unsigned-long-long</structname></synopsis>
+<blockquote><para>These types correspond to the native C integer types according to the
+ABI of the system the Lisp implementation is compiled against.
+</para></blockquote>
+<synopsis><indexterm role="tp"><primary>:int8</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:int8</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:uint8</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:uint8</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:int16</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:int16</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:uint16</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:uint16</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:int32</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:int32</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:uint32</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:uint32</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:int64</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:int64</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:uint64</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:uint64</structname></synopsis>
+<blockquote><para>Foreign integer types of specific sizes, corresponding to the C types
+defined in <literal>stdint.h</literal>.
+</para></blockquote>
+<synopsis><indexterm role="tp"><primary>:size</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:size</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:ssize</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:ssize</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:ptrdiff</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:ptrdiff</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:time</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:time</structname></synopsis>
+<blockquote><para>Foreign integer types corresponding to the standard C types (without
+the <literal>_t</literal> suffix).
+</para></blockquote>
+<para><emphasis>Implementor&#8217;s note: I&#8217;m sure there are more of these that could be useful, let&#8217;s
+add any types that can&#8217;t be defined portably to this list as
+necessary.</emphasis>
+</para>
+<synopsis><indexterm role="tp"><primary>:float</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:float</structname></synopsis>
+<synopsis><indexterm role="tp"><primary>:double</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:double</structname></synopsis>
+<blockquote><para>The <literal>:float</literal> type represents a C <literal>float</literal> and a Lisp
+<literal>single-float</literal>. <literal>:double</literal> represents a C <literal>double</literal> and a
+Lisp <literal>double-float</literal>.
+</para></blockquote>
+<synopsis><indexterm role="tp"><primary>:pointer</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:pointer</structname></synopsis>
+<blockquote><para>A foreign pointer to an object of any type, corresponding to
+<literal>void *</literal>.
+</para></blockquote>
+<synopsis><indexterm role="tp"><primary>:void</primary></indexterm><phrase role="category"><emphasis role="bold">Foreign Type</emphasis>:</phrase> <structname>:void</structname></synopsis>
+<blockquote><para>No type at all. Only valid as the return type of a function.
+</para></blockquote>
+
+</chapter>
+<chapter label="3" id="Operations-on-Foreign-Types">
+<title>Operations on Built-in Foreign Types</title>
+
+<synopsis><indexterm role="fn"><primary>%foreign-type-size</primary></indexterm><phrase role="category"><emphasis role="bold">Function</emphasis>:</phrase> <function>%foreign-type-size</function> <replaceable>type</replaceable> <replaceable>&#8658;</replaceable> <replaceable>size</replaceable></synopsis>
+<blockquote><para>Return the <replaceable>size</replaceable>, in bytes, of objects having foreign type
+<replaceable>type</replaceable>. An error is signalled if <replaceable>type</replaceable> is not a known
+built-in foreign type.
+</para></blockquote>
+<synopsis><indexterm role="fn"><primary>%foreign-type-alignment</primary></indexterm><phrase role="category"><emphasis role="bold">Function</emphasis>:</phrase> <function>%foreign-type-alignment</function> <replaceable>type</replaceable> <replaceable>&#8658;</replaceable> <replaceable>alignment</replaceable></synopsis>
+<blockquote><para>Return the default alignment in bytes for structure members of foreign
+type <replaceable>type</replaceable>. An error is signalled if <replaceable>type</replaceable> is not a known
+built-in foreign type.
+</para>
+<para><emphasis>Implementor&#8217;s note: Maybe this should take an optional keyword argument specifying an
+alternate alignment system, eg. :mac68k for 68000-compatible alignment
+on Darwin.</emphasis>
+</para></blockquote>
+
+</chapter>
+<chapter label="4" id="Basic-Pointer-Operations">
+<title>Basic Pointer Operations</title>
+
+<synopsis><indexterm role="fn"><primary>pointerp</primary></indexterm><phrase role="category"><emphasis role="bold">Function</emphasis>:</phrase> <function>pointerp</function> <replaceable>ptr</replaceable> <replaceable>&#8658;</replaceable> <replaceable>boolean</replaceable></synopsis>
+<blockquote><para>Return true if <replaceable>ptr</replaceable> is a foreign pointer.
+</para></blockquote>
+<synopsis><indexterm role="fn"><primary>null-pointer</primary></indexterm><phrase role="category"><emphasis role="bold">Function</emphasis>:</phrase> <function>null-pointer</function> <replaceable>&#8658;</replaceable> <replaceable>pointer</replaceable></synopsis>
+<blockquote><para>Return a null foreign pointer.
+</para></blockquote>
+<synopsis><indexterm role="fn"><primary>null-pointer-p</primary></indexterm><phrase role="category"><emphasis role="bold">Function</emphasis>:</phrase> <function>null-pointer-p</function> <replaceable>ptr</replaceable> <replaceable>&#8658;</replaceable> <replaceable>boolean</replaceable></synopsis>
+<blockquote><para>Return true if <replaceable>ptr</replaceable> is a null foreign pointer.
+</para></blockquote>
+<synopsis><indexterm role="fn"><primary>make-pointer</primary></indexterm><phrase role="category"><emphasis role="bold">Function</emphasis>:</phrase> <function>make-pointer</function> <replaceable>address</replaceable> <replaceable>&#8658;</replaceable> <replaceable>pointer</replaceable></synopsis>
+<blockquote><para>Return a pointer corresponding to the numeric integer <replaceable>address</replaceable>.
+</para></blockquote>
+<synopsis><indexterm role="fn"><primary>inc-pointer</primary></indexterm><phrase role="category"><emphasis role="bold">Function</emphasis>:</phrase> <function>inc-pointer</function> <replaceable>ptr</replaceable> <replaceable>offset</replaceable> <replaceable>&#8658;</replaceable> <replaceable>pointer</replaceable></synopsis>
+<blockquote><para>Return the result of numerically incrementing <replaceable>ptr</replaceable> by <replaceable>offset</replaceable>.
+</para></blockquote>
+
+</chapter>
+<chapter label="5" id="Foreign-Memory-Allocation">
+<title>Foreign Memory Allocation</title>
+
+<synopsis><indexterm role="fn"><primary>foreign-alloc</primary></indexterm><phrase role="category"><emphasis role="bold">Function</emphasis>:</phrase> <function>foreign-alloc</function> <replaceable>size</replaceable> <replaceable>&#8658;</replaceable> <replaceable>pointer</replaceable></synopsis>
+<blockquote><para>Allocate <replaceable>size</replaceable> bytes of foreign-addressable memory and return
+a <replaceable>pointer</replaceable> to the allocated block. An implementation-specific
+error is signalled if the memory cannot be allocated.
+</para></blockquote>
+<synopsis><indexterm role="fn"><primary>foreign-free</primary></indexterm><phrase role="category"><emphasis role="bold">Function</emphasis>:</phrase> <function>foreign-free</function> <replaceable>ptr</replaceable> <replaceable>&#8658;</replaceable> <replaceable>unspecified</replaceable></synopsis>
+<blockquote><para>Free a pointer <replaceable>ptr</replaceable> allocated by <literal>foreign-alloc</literal>. The
+results are undefined if <replaceable>ptr</replaceable> is used after being freed.
+</para></blockquote>
+<synopsis><indexterm role="fn"><primary>with-foreign-pointer</primary></indexterm><phrase role="category"><emphasis role="bold">Macro</emphasis>:</phrase> <function>with-foreign-pointer</function> (<replaceable>var</replaceable> <replaceable>size</replaceable> <replaceable>&amp;optional</replaceable> <replaceable>size-var</replaceable>) <replaceable>&amp;body</replaceable> <replaceable>body</replaceable></synopsis>
+<blockquote><para>Bind <replaceable>var</replaceable> to a pointer to <replaceable>size</replaceable> bytes of
+foreign-accessible memory during <replaceable>body</replaceable>.  Both <replaceable>ptr</replaceable> and the
+memory block it points to have dynamic extent and may be stack
+allocated if supported by the implementation. If <replaceable>size-var</replaceable> is
+supplied, it will be bound to <replaceable>size</replaceable> during <replaceable>body</replaceable>.
+</para></blockquote>
+
+</chapter>
+<chapter label="6" id="Memory-Access">
+<title>Memory Access</title>
+
+<synopsis><indexterm role="fn"><primary>%mem-ref</primary></indexterm><phrase role="category"><emphasis role="bold">Accessor</emphasis>:</phrase> <function>%mem-ref</function> <replaceable>ptr</replaceable> <replaceable>type</replaceable> <replaceable>&amp;optional</replaceable> <replaceable>offset</replaceable></synopsis>
+<blockquote><para>Dereference a pointer <replaceable>offset</replaceable> bytes from <replaceable>ptr</replaceable> to an object
+for reading (or writing when used with <literal>setf</literal>) of built-in type
+<replaceable>type</replaceable>.
+</para></blockquote>
+<bridgehead renderas="sect1">Example</bridgehead>
+
+<programlisting>;; An impractical example, since time returns the time as well,
+;; but it demonstrates %MEM-REF. Better (simple) examples wanted!
+(with-foreign-pointer (p (foreign-type-size :time))
+  (foreign-funcall &quot;time&quot; :pointer p :time)
+  (%mem-ref p :time))
+</programlisting>
+
+</chapter>
+<chapter label="7" id="Foreign-Function-Calling">
+<title>Foreign Function Calling</title>
+
+<synopsis><indexterm role="fn"><primary>%foreign-funcall</primary></indexterm><phrase role="category"><emphasis role="bold">Macro</emphasis>:</phrase> <function>%foreign-funcall</function> <replaceable>name</replaceable> <replaceable>{</replaceable><replaceable>arg-type</replaceable> <replaceable>arg</replaceable><replaceable>}</replaceable><replaceable>*</replaceable> <replaceable>&amp;optional</replaceable> <replaceable>result-type</replaceable> <replaceable>&#8658;</replaceable> <replaceable>object</replaceable></synopsis>
+<synopsis><indexterm role="fn"><primary>%foreign-funcall-pointer</primary></indexterm><phrase role="category"><emphasis role="bold">Macro</emphasis>:</phrase> <function>%foreign-funcall-pointer</function> <replaceable>ptr</replaceable> <replaceable>{</replaceable><replaceable>arg-type</replaceable> <replaceable>arg</replaceable><replaceable>}</replaceable><replaceable>*</replaceable> <replaceable>&amp;optional</replaceable> <replaceable>result-type</replaceable> <replaceable>&#8658;</replaceable> <replaceable>object</replaceable></synopsis>
+<blockquote><para>Invoke a foreign function called <replaceable>name</replaceable> in the foreign source code.
+</para>
+<para>Each <replaceable>arg-type</replaceable> is a foreign type specifier, followed by
+<replaceable>arg</replaceable>, Lisp data to be converted to foreign data of type
+<replaceable>arg-type</replaceable>.  <replaceable>result-type</replaceable> is the foreign type of the
+function&#8217;s return value, and is assumed to be <literal>:void</literal> if not
+supplied.
+</para>
+<para><literal>%foreign-funcall-pointer</literal> takes a pointer <replaceable>ptr</replaceable> to the
+function, as returned by <literal>foreign-symbol-pointer</literal>, rather than a
+string <replaceable>name</replaceable>.
+</para></blockquote>
+<synopsis><indexterm role="fn"><primary>%foreign-funcall-varargs</primary></indexterm><phrase role="category"><emphasis role="bold">Macro</emphasis>:</phrase> <function>%foreign-funcall-varargs</function> <replaceable>name</replaceable> (<replaceable>{</replaceable><replaceable>fixed-type</replaceable> <replaceable>arg</replaceable><replaceable>}</replaceable><replaceable>*</replaceable>) <replaceable>{</replaceable><replaceable>vararg-type</replaceable> <replaceable>arg</replaceable><replaceable>}</replaceable><replaceable>*</replaceable> <replaceable>&amp;optional</replaceable> <replaceable>result-type</replaceable> <replaceable>&#8658;</replaceable> <replaceable>object</replaceable></synopsis>
+<synopsis><indexterm role="fn"><primary>%foreign-funcall-varargs-pointer</primary></indexterm><phrase role="category"><emphasis role="bold">Macro</emphasis>:</phrase> <function>%foreign-funcall-varargs-pointer</function> <replaceable>ptr</replaceable> (<replaceable>{</replaceable><replaceable>fixed-type</replaceable> <replaceable>arg</replaceable><replaceable>}</replaceable><replaceable>*</replaceable>) <replaceable>{</replaceable><replaceable>vararg-type</replaceable> <replaceable>arg</replaceable><replaceable>}</replaceable><replaceable>*</replaceable> <replaceable>&amp;optional</replaceable> <replaceable>result-type</replaceable> <replaceable>&#8658;</replaceable> <replaceable>object</replaceable></synopsis>
+<blockquote><para>Invoke a foreign variadic function called <replaceable>name</replaceable> in the foreign
+source code.
+</para>
+<para>Each <replaceable>fixed-type</replaceable> and <replaceable>vararg-type</replaceable> is a foreign type
+specifier, followed by <replaceable>arg</replaceable>, Lisp data to be converted to foreign
+data of type <replaceable>arg-type</replaceable>.  <replaceable>result-type</replaceable> is the foreign type of
+the function&#8217;s return value, and is assumed to be <literal>:void</literal> if not
+supplied.
+</para>
+<para><literal>%foreign-funcall-pointer-varargs</literal> takes a pointer <replaceable>ptr</replaceable> to
+the variadic function, as returned by <literal>foreign-symbol-pointer</literal>,
+rather than a string <replaceable>name</replaceable>.
+</para>
+<para>Both functions have default implementation which call
+<literal>%foreign-funcall</literal> and <literal>%foreign-funcall-pointer</literal>
+approprietly.
+</para></blockquote>
+<bridgehead renderas="sect1">Examples</bridgehead>
+
+<programlisting>;; Calling a standard C library function:
+(%foreign-funcall &quot;sqrtf&quot; :float 16.0 :float) &#8658; 4.0
+</programlisting>
+<programlisting>;; Dynamic allocation of a buffer and passing to a function:
+(with-foreign-ptr (buf 255 buf-size)
+  (%foreign-funcall &quot;gethostname&quot; :pointer buf :size buf-size :int)
+  ;; Convert buf to a Lisp string using MAKE-STRING and %MEM-REF or
+  ;; a portable CFFI function such as CFFI:FOREIGN-STRING-TO-LISP.
+  )
+</programlisting>
+
+</chapter>
+<chapter label="8" id="Loading-Foreign-Libraries">
+<title>Loading Foreign Libraries</title>
+
+<synopsis><indexterm role="fn"><primary>%load-foreign-library</primary></indexterm><phrase role="category"><emphasis role="bold">Function</emphasis>:</phrase> <function>%load-foreign-library</function> <replaceable>name</replaceable> <replaceable>&#8658;</replaceable> <replaceable>unspecified</replaceable></synopsis>
+<blockquote><para>Load the foreign shared library <replaceable>name</replaceable>.
+</para>
+<para><emphasis>Implementor&#8217;s note: There is a lot of behavior to decide here.  Currently I lean
+toward not requiring NAME to be a full path to the library so
+we can search the system library directories (maybe even get
+LD_LIBRARY_PATH from the environment) as necessary.</emphasis>
+</para></blockquote>
+
+</chapter>
+<chapter label="9" id="Foreign-Globals">
+<title>Foreign Globals</title>
+
+<synopsis><indexterm role="fn"><primary>foreign-symbol-pointer</primary></indexterm><phrase role="category"><emphasis role="bold">Function</emphasis>:</phrase> <function>foreign-symbol-pointer</function> <replaceable>name</replaceable> <replaceable>&#8658;</replaceable> <replaceable>pointer</replaceable></synopsis>
+<blockquote><para>Return a pointer to a foreign symbol <replaceable>name</replaceable>.
+</para></blockquote>
+</chapter>
+<chapter label="" id="Symbol-Index">
+<title>Symbol Index</title>
+<index role="fn"></index>
+
+</chapter>
+</book>
